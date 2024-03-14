@@ -1,8 +1,9 @@
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, {withOpenLabel} from "./RestaurantCard";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
-import useOnlineStatus from "../utils/useOnlineStatus"
+import useOnlineStatus from "../utils/useOnlineStatus";
+
 
 const Body = () => {
 
@@ -10,6 +11,10 @@ const Body = () => {
     const [filteredRestaurant, setFilteredRestaurant] = useState([]);
 
     const [searchText, setSearchText] = useState("");
+
+    const RestaurantCardOpen = withOpenLabel(RestaurantCard);
+
+    console.log("Body Render", listOfRestaurants)
 
     useEffect(() => {
       fetchData();
@@ -57,8 +62,12 @@ const Body = () => {
             }}>Top Rated Rastaurent</button>
             </div>
           </div>
-          <div className="res-container">
-           {filteredRestaurant.map((restaurant) => <Link key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id}><RestaurantCard  resData={restaurant}/></Link>)}
+          <div className="flex flex-wrap">
+           {filteredRestaurant.map((restaurant) => 
+           <Link key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id}>
+            
+            { restaurant.info.isOpen ? <RestaurantCardOpen resData={restaurant} /> : <RestaurantCard  resData={restaurant}/> }
+            </Link>)}
             
            
           </div>
